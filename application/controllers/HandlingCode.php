@@ -11,15 +11,27 @@ class HandlingCode extends CI_Controller {
     		$this->session->set_flashdata('message', "Please login first!!");
     		redirect('login', 'refresh');
     	}
+
+    	$group = array("Level-1","Level-2","Level-3","Level-4");
+
+    	if(!$this->ion_auth->in_group($group)){
+    		$this->session->set_flashdata('warning', "You don't have access to complete the operation.");
+    		redirect('dashboard', 'refresh');
+    	}
 		
 		$this->load->helper('CID/nav');
 		$this->load->library('form_validation');
 		$this->load->model('Handling_code_model');
 
-		$text_exists = $this->Handling_code_model->remaining_text($_SESSION['record_id']);
+		$text_exists = 0;
+
+		if(isset($_SESSION['record_id'])){
+			$text_exists = $this->Handling_code_model->remaining_text($_SESSION['record_id']);
+		}
 		
     	if($text_exists == 0){
-    		redirect('text','refresh');
+    		$this->session->set_flashdata('warning', "Please follow the completion note.");
+    		redirect('text/','refresh');
     	}
 	}
 
@@ -38,7 +50,6 @@ class HandlingCode extends CI_Controller {
 			$data['text']              = $this->Handling_code_model->get_text_info($record_id);
 			$data['remainingTextVeiw'] = $this->Handling_code_model->remaining_text($record_id) - 1;
 		}
-
 		$this->load->view('dashboard/handlingcode', $data);
 	}
 
@@ -94,18 +105,29 @@ class HandlingCode extends CI_Controller {
 	}
 
 	public function review(){
+
+		$check_all_handling_code_processed = $this->Handling_code_model->check_all_handling_code_processed($_SESSION['record_id']);
+
+		if(!$check_all_handling_code_processed){
+			$this->session->set_flashdata('warning', "Please follow the completion note.");
+			redirect('handlingcode/','refresh');
+		}
+
 		$data['user']             = $this->ion_auth->user()->row();
 		$data['review']           = $this->Handling_code_model->handling_code_review($_SESSION['record_id']);
+
 		if(count($data['review']) == 0){
 			redirect('protectivemark/','refresh');
 		}
+
 		$data['total_for_review'] = $this->Handling_code_model->total_unreviewed_handling_code($_SESSION['record_id']);
 		$this->load->view('dashboard/handlingcodereview', $data);
+		
 	}
 
 	public function review_done(){
 		if (!$this->input->is_ajax_request()) {
-		   exit('No direct script access allowed');
+		   show_404();
 		}else{			
 			$handlingcodeID = $this->input->post('handlingCodeID');
 
@@ -133,19 +155,27 @@ class HandlingCode extends CI_Controller {
 	}
 
 	public function recheck_handling_code(){
-		$handlingCodeID = $this->input->post('handlingCodeID');
-		$data           = $this->Handling_code_model->get_handling_code($handlingCodeID);
-		echo json_encode($data);
+		if (!$this->input->is_ajax_request()) {
+		   show_404();
+		}else{
+			$handlingCodeID = $this->input->post('handlingCodeID');
+			$data           = $this->Handling_code_model->get_handling_code($handlingCodeID);
+			echo json_encode($data);
+		}
 	}
 
 	public function update_handling_code(){
-		$handlingInstruction = $this->input->post('handlingInstruction');
-		$handlingCode        = $this->input->post('handlingCode');
-		$handlingCodeID      = $this->input->post('hid');
+		if (!$this->input->is_ajax_request()) {
+		   show_404();
+		}else{
+			$handlingInstruction = $this->input->post('handlingInstruction');
+			$handlingCode        = $this->input->post('handlingCode');
+			$handlingCodeID      = $this->input->post('hid');
 
-		$this->Handling_code_model->update_handling_code($handlingCode, $handlingInstruction, $handlingCodeID);
-		$data = $this->Handling_code_model->get_handling_code($handlingCodeID);
-		echo json_encode($data);
+			$this->Handling_code_model->update_handling_code($handlingCode, $handlingInstruction, $handlingCodeID);
+			$data = $this->Handling_code_model->get_handling_code($handlingCodeID);
+			echo json_encode($data);
+		}
 	}
 
 }

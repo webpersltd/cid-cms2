@@ -23,7 +23,6 @@
                 </div>
                   
                 <!-- Collect the nav links, forms, and other content for toggling -->
-
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a href=""></a></li>
@@ -55,6 +54,7 @@
         <div class="container-fluid">
             <div class="col-md-2">
                 <ul class="list-group">
+                    <li  class="list-group-item"><a href="<?php echo base_url(); ?>dashboard"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp&nbspDashboard</a></li>
                     <li  class="list-group-item"><a href="<?php echo base_url(); ?>initials/"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp&nbspInitials</a></li>
                     <li class="list-group-item"><a href="<?php echo base_url(); ?>subjects/"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>&nbsp&nbspSubjects</a></li>
                     <li class="list-group-item"><a href="<?php echo base_url(); ?>text/"><span class="glyphicon glyphicon-text-size" aria-hidden="true"></span>&nbsp&nbspText</a></li>
@@ -126,10 +126,10 @@
                 <div class="form-group final-button">
                 <div class="row">
                     <div class="col-md-7">
-                        <button type="submit" class="btn btn-success">SAVE INFORMATION AND CONTINUE&nbsp;&nbsp;<span class="glyphicon glyphicon-ok"></span></button>
+                        <button type="submit" class="btn btn-success">REPORT SUBMISSION DONE&nbsp;&nbsp;<span class="glyphicon glyphicon-ok"></span></button>
                     </div>
                     <div class="col-md-3">
-                        <a href="#" class="btn btn-danger">CANCEL&nbsp;&nbsp;<span class="glyphicon glyphicon-remove"></span></a>
+                        <a href="<?= base_url() ?>dashboard" onclick="alert('Do you really want to cancel?');" class="btn btn-danger">CANCEL&nbsp;&nbsp;<span class="glyphicon glyphicon-remove"></span></a>
                     </div>
                 </div>
                 <?= form_close(); ?>

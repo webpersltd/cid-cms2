@@ -54,6 +54,7 @@
         <div class="container-fluid">
             <div class="col-md-2">
             <ul class="list-group">
+                <li  class="list-group-item"><a href="<?php echo base_url(); ?>dashboard"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp&nbspDashboard</a></li>
                 <li  class="list-group-item"><a href="<?php echo base_url(); ?>initials/"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp&nbspInitials</a></li>
                 <li class="list-group-item"><a href="<?php echo base_url(); ?>subjects/"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>&nbsp&nbspSubjects</a></li>
                 <li class="list-group-item"><a href="<?php echo base_url(); ?>text/"><span class="glyphicon glyphicon-text-size" aria-hidden="true"></span>&nbsp&nbspText</a></li>
@@ -91,184 +92,10 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h3>SUMMERY OF TEXT AND EVALUATION</h3>
-                            <?php 
-                            
-                                foreach($text as $temp){
-                                    echo '<textarea class="text_box"  rows="5" style="width:97.5%">'.$temp->summary.'</textarea>';
-                                }
-                            
-                            ?>
                         </div>
-                       
-                        <div class="col-md-2">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-4">
                             <h3>GRADING</h3>
-                            <ul style="margin-left:0px;list-style:none">
-                                            
-                            <?php 
-                            
-                                foreach($text as $temp){
-                                    echo '<div style="margin-bottom:71px;padding-top:10px">';
-                                    echo '<li  style="display:inline-block;padding:5px;border:1px solid black">'.$temp->src_eval.'</li>';
-                                    echo '<li  style="display:inline-block;padding:5px;border:1px solid black">'.$temp->inf_int_eval.'</li>';
-                                    echo "</div>";
-                                }
-                            
-                            ?>
-                            </ul>
-                        </div>
-                        <div class="col-md-1">
-                            <h3>STATUS</h3>
-                            <?php 
-                            
-                                foreach($text as $temp){
-                                    echo '<div style="height:110px">';
-                                    if($temp->status==0){
-                                        echo '<button data-toggle="modal" data-target="#'.$temp->id.'" style="color:red;font-weight:bold" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span> Not reviewed(Click to review)</button>';
-                                    }else{
-                                        echo '<button disabled style="color:green;font-weight:bold" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Reviewed</button>';
-                                    }
-                                    
-                                    $src_info='<option value="A" selected>(A) - Always Reliable</option>
-                                    <option value="B">(B) - Mostly Reliable</option>
-                                    <option value="C">(C) - Sometimes Reliable</option>
-                                    <option value="D">(D) - Unreliable</option>
-                                    <option value="E">(E) - Untested source</option>';
-                                   switch($temp->src_eval){
-                                        case "A":
-                                            $src_info='<option value="A" selected>(A) - Always Reliable</option>
-                                                        <option value="B">(B) - Mostly Reliable</option>
-                                                        <option value="C">(C) - Sometimes Reliable</option>
-                                                        <option value="D">(D) - Unreliable</option>
-                                                        <option value="E">(E) - Untested source</option>';
-                                            break;
-                                        
-                                        case "B":
-                                            $src_info='<option value="A">(A) - Always Reliable</option>
-                                                       <option value="B" selected>(B) - Mostly Reliable</option>
-                                                       <option value="C">(C) - Sometimes Reliable</option>
-                                                       <option value="D">(D) - Unreliable</option>
-                                                       <option value="E">(E) - Untested source</option>';
-                                        break;
-
-
-                                        case "C":
-                                            $src_info='<option value="A">(A) - Always Reliable</option>
-                                                       <option value="B">(B) - Mostly Reliable</option>
-                                                       <option value="C" selected>(C) - Sometimes Reliable</option>
-                                                       <option value="D">(D) - Unreliable</option>
-                                                       <option value="E">(E) - Untested source</option>';
-                                        break;
-
-
-
-                                        case "D":
-                                            $src_info='<option value="A">(A) - Always Reliable</option>
-                                                       <option value="B">(B) - Mostly Reliable</option>
-                                                       <option value="C">(C) - Sometimes Reliable</option>
-                                                       <option value="D" selected>(D) - Unreliable</option>
-                                                       <option value="E">(E) - Untested source</option>';
-                                        break;
-
-
-                                        case "E":
-                                            $src_info='<option value="A">(A) - Always Reliable</option>
-                                                       <option value="B">(B) - Mostly Reliable</option>
-                                                       <option value="C">(C) - Sometimes Reliable</option>
-                                                       <option value="D">(D) - Unreliable</option>
-                                                       <option value="E" selected>(E) - Untested source</option>';
-                                        break;
-                                   }
-
-                                    $inf_int_eval='
-                                                <option value="1">(1) - Known to be true without reservation</option>
-                                                <option value="2">(2) - Known personally to the source but not the person reporting </option>
-                                                <option value="3">(3) - Not known personally to the source, but corroborated</option>
-                                                <option value="4">(4) - Cannot be judged</option>
-                                                <option value="5">(5) - Suspected to be false</option>';
-
-
-
-                                                switch($temp->inf_int_eval){
-                                                    case 1:
-                                                        $inf_int_eval='<option value="1" selected>(1) - Known to be true without reservation</option>
-                                                                    <option value="2">(2) - Known personally to the source but not the person reporting </option>
-                                                                    <option value="3">(3) - Not known personally to the source, but corroborated</option>
-                                                                    <option value="4">(4) - Cannot be judged</option>
-                                                                    <option value="5">(5) - Suspected to be false</option>';
-                                                        break;
-                                                    
-                                                    case 2:
-                                                        $inf_int_eval='<option value="1">(1) - Known to be true without reservation</option>
-                                                                    <option value="2" selected>(2) - Known personally to the source but not the person reporting </option>
-                                                                    <option value="3">(3) - Not known personally to the source, but corroborated</option>
-                                                                    <option value="4">(4) - Cannot be judged</option>
-                                                                    <option value="5">(5) - Suspected to be false</option>';
-                                                    break;
-            
-            
-                                                    case 3:
-                                                        $inf_int_eval='<option value="1">(1) - Known to be true without reservation</option>
-                                                                    <option value="2">(2) - Known personally to the source but not the person reporting </option>
-                                                                    <option value="3" selected>(3) - Not known personally to the source, but corroborated</option>
-                                                                    <option value="4">(4) - Cannot be judged</option>
-                                                                    <option value="5">(5) - Suspected to be false</option>';
-            
-                                                        break;
-            
-                                                    case 4:
-                                                            $inf_int_eval='<option value="1">(1) - Known to be true without reservation</option>
-                                                            <option value="2">(2) - Known personally to the source but not the person reporting </option>
-                                                            <option value="3">(3) - Not known personally to the source, but corroborated</option>
-                                                            <option value="4" selected>(4) - Cannot be judged</option>
-                                                            <option value="5">(5) - Suspected to be false</option>';
-                                                    break;
-            
-            
-                                                    case 5:
-                                                        $inf_int_eval='<option value="1" selected>(1) - Known to be true without reservation</option>
-                                                        <option value="2">(2) - Known personally to the source but not the person reporting </option>
-                                                        <option value="3">(3) - Not known personally to the source, but corroborated</option>
-                                                        <option value="4">(4) - Cannot be judged</option>
-                                                        <option value="5" selected>(5) - Suspected to be false</option>';
-                                                    break;
-                                               }            
-
-                                    echo '<div class="modal fade" id="'.$temp->id.'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                           
-                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                          </button>
-                                        </div>
-                                        <div class="modal-body">
-                                          <form method="post" action="'.base_url().'reviewText/">
-                                            SUMMARY :<textarea class="text_box" name="summary" rows="5" style="width:97.5%">'.$temp->summary.'</textarea>
-                                            <input type="text" hidden name="text_id" value="'.$temp->id.'"/>
-                                            SOURCE EVALUATION:
-                                            <select style="margin-top:10px;margin-bottom:10px;padding:13px" name="source_evaluation">
-                                                '.$src_info.'
-                                            </select>
-                                            </br>INFORMATION INTELLIGENCE EVALUATION : </br>
-                                            <select style="margin-top:10px;margin-bottom:10px;padding:13px" name="inf_i_eva">
-                                                '.$inf_int_eval.'
-                                            </select>
-                                        <div class="modal-footer">
-                                            <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button  type="submit" class="btn btn-primary">Save changes</button>
-                                          
-                                        </div>
-                                        </form>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>';
-
-                                    echo "</div>";
-                                }
-                            
-                            ?>
                         </div>
                     </div>
                    
@@ -448,16 +275,7 @@
                         }*/
                     }
                 });
-            })  
-            
-            
-
-            
+            })        
         </script>
-        <?php
-            echo "<pre>";
-            print_r($text);
-        
-        ?>
     </body>
 </html>

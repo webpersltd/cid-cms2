@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>SEARCH RECORD</title>
+        <title>Title here</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
         <link type="text/css" rel="stylesheet" href="../css/style.css"/>
@@ -69,10 +69,9 @@
                 </ul>
                 </div>
                 <div  class="col-md-9 userlog">
-                <?php if(isset($_SESSION['message'])) echo "<h3 style='background:red;color:white'>".$_SESSION['message']."</h3>"; ?>
                     <h3 class="heading">SEARCH RECORDS</h3>
                     <h1 style="visibility:hidden">Nothing </h1>
-                    <form  action="<?php echo base_url(); ?>searchRecord/" method="post">
+                    <form>
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="row">
@@ -90,13 +89,13 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="text" name="urnNo" class="form-control" id="urnNo">
+                                            <input type="text" class="form-control" id="urnNo">
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="surName" id="surName" placeholder="SUBJECT SURNAME">
+                                            <input type="text" class="form-control" id="surName" placeholder="SUBJECT SURNAME">
                                         </div>
                                         <div class="form-group">
-                                            <input type="date" name="dob" class="form-control" id="dob">
+                                            <input type="date" class="form-control" id="dob">
                                         </div>
                                     </div>
                                 </div>
@@ -117,19 +116,13 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="text" name="isr" class="form-control" id="isr">
-                                          
+                                            <input type="text" class="form-control" id="isr">
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="firstname" id="subjectName" placeholder="SUBJECT FIRST NAME">
+                                            <input type="text" class="form-control" id="subjectName" placeholder="SUBJECT FIRST NAME">
                                         </div>
                                         <div class="form-group">
-                                            <!-- <input type="text" class="form-control" id="nationality" placeholder="NATIONALITY"> -->
-                                            <select style="padding-top:10px; padding-bottom:10px" name="nationality" id="">
-                                            <!-- <option value="">Select nationality</option> -->
-                                                <?php getNationality(); ?>
-                                            
-                                            </select>
+                                            <input type="text" class="form-control" id="nationality" placeholder="NATIONALITY">
                                         </div>
                                     </div>
                                   
@@ -146,7 +139,7 @@
                             </div>
                             <div style="margin-left:4%" class="col-md-9">
                                 <div class="form-group">
-                                    <input class="form-control" style="width:70%" type="text" id="freeText" name="freetext" placeholder="FREE TEXT"/>
+                                    <input class="form-control" style="width:70%" type="text" id="freeText" placeholder="FREE TEXT"/>
                                 </div>
                                 
                             </div>
@@ -173,13 +166,13 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="date" class="form-control" name="dateFrom" id="dateFrom">
+                                            <input type="date" class="form-control" id="dateFrom">
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" id="sourceInfo" name="sourceInfo" placeholder="SOURCE OF INFORMATION">
+                                            <input type="text" class="form-control" id="sourceInfo" placeholder="SOURCE OF INFORMATION">
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" id="officerName" name="officerName" placeholder="OFFICER NAME">
+                                            <input type="text" class="form-control" id="officerName" placeholder="OFFICER NAME">
                                         </div>
                                     </div>
                                 </div>
@@ -200,10 +193,10 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="date" class="form-control" name="dateTo" id="dateTo">
+                                            <input type="date" class="form-control" id="dateTo">
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" id="location" name="location" placeholder="LOCATION">
+                                            <input type="text" class="form-control" id="sourceInfo" placeholder="LOCATION">
                                         </div>
                                         <div class="form-group">
                                             <input type="text" disabled class="form-control" id="userName" placeholder="USER NAME">
@@ -230,8 +223,6 @@
                         
                     </form>
                     <h1 style="visibility:hidden">Nothing </h1>
-                    <?php 
-                      if(isset($records)){ //echo "<pre>" ; print_r($records); ?>
                     <h3>RESULTS :</h3>
                     <div class="table-responsive">
                         <table class="table table-bordered">
@@ -240,112 +231,62 @@
                                 <th>URN</th>
                                 <th>Department</th>
                                 <th>Officer Submitting Report</th>
+                                <th>Job title</th>
                                 <th>View</th>
                             </tr>
-                            
-                            <?php
-                                $flag=0;
-                                for ($i=0;$i<(count($records)>3?3:count($records));$i++) {
-                                //print_r(getOfficerName($records[$i]->user_id));
-                                echo '<tr class="info">
-                                    <td>'.$flag.'</td>
-                                    <td>'.$records[$i]->urn.'</td>
-                                    <td>'.getDepartmentname($records[$i]->department).'</td>
-                                    <td>'.getOfficerName($records[$i]->user_id).'</td>
+                            <tr class="success">
+                                <td>1</td>
+                                <td>00001251</td>
+                                <td>Customs Intelligence Investigation directorate</td>
+                                <td>Mark Hamill</td>
+                                <td>Intelligence analyst</td>
+                                <td><a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon  glyphicon-eye-open" aria-hidden="true">&nbsp</span></a></td>
+                            </tr>
+                            <tr class="danger">
+                                    <td>2</td>
+                                    <td>00001251</td>
+                                    <td>Customs Intelligence Investigation directorate</td>
+                                    <td>Mark Hamill</td>
+                                    <td>Intelligence analyst</td>
                                     <td><a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon  glyphicon-eye-open" aria-hidden="true">&nbsp</span></a></td>
-                                    </tr>';
-                                    $flag++;
-                                }
-                            
-                            ?>
-                        </table>        
+                            </tr>
+                            <tr class="success">
+                                    <td>3</td>
+                                    <td>00001251</td>
+                                    <td>Customs Intelligence Investigation directorate</td>
+                                    <td>Mark Hamill</td>
+                                    <td>Intelligence analyst</td>
+                                    <td><a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon  glyphicon-eye-open" aria-hidden="true">&nbsp</span></a></td>
+                            </tr>
+                            <tr class="danger">
+                                    <td>4</td>
+                                    <td>00001251</td>
+                                    <td>Customs Intelligence Investigation directorate</td>
+                                    <td>Mark Hamill</td>
+                                    <td>Intelligence analyst</td>
+                                    <td><a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon  glyphicon-eye-open" aria-hidden="true">&nbsp</span></a></td>
+                            </tr>
+                        </table>         
                         <nav aria-label="Page navigation">
                                 <ul class="pagination">
-                                  <!-- <li>
+                                  <li>
                                     <a href="#" aria-label="Previous">
                                       <span aria-hidden="true">&laquo;</span>
                                     </a>
-                                  </li> -->
-                                  <?php for ($i=0;$i<=count($records)/3;$i++) {
-                                            $url=base_url()."searchPagination/".$i;
-                                            if($i==0) {
-                                                echo '<li><a href="'.$url.'">'.++$i.'</a></li>';
-                                            }
-                                            else  {
-                                                echo '<li><a href="'.$url.'">'.$i.'</a></li>'; 
-                                            }
-                                        }
-                                    
-                                    
-                                    ?>
-                                 
-                                  <!-- <li>
+                                  </li>
+                                  <li><a href="#">1</a></li>
+                                  <li><a href="#">2</a></li>
+                                  <li><a href="#">3</a></li>
+                                  <li><a href="#">4</a></li>
+                                  <li><a href="#">5</a></li>
+                                  <li>
                                     <a href="#" aria-label="Next">
                                       <span aria-hidden="true">&raquo;</span>
                                     </a>
-                                  </li> -->
+                                  </li>
                                 </ul>
                         </nav>
-                        <?php }else{}?>  
-
-
-                        <?php 
-                          if(isset($paginatedData)){    ?>
-                            <h3>RESULTS :</h3>
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <tr>
-                                        <th>NO</th>
-                                        <th>URN</th>
-                                        <th>Department</th>
-                                        <th>Officer Submitting Report</th>
-                                        <th>View</th>
-                                    </tr>
-                                    <?php
-                                $flag=1;
-                                for ($i=0;$i<count($paginatedData);$i++) {
-                                //print_r(getOfficerName($records[$i]->user_id));
-                                echo '<tr class="info">
-                                    <td>'.$flag.'</td>
-                                    <td>'.$paginatedData[$i]->urn.'</td>
-                                    <td>'.getDepartmentname($paginatedData[$i]->department).'</td>
-                                    <td>'.getOfficerName($paginatedData[$i]->user_id).'</td>
-                                    <td><a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon  glyphicon-eye-open" aria-hidden="true">&nbsp</span></a></td>
-                                    </tr>';
-                                    $flag++;
-                                }
-                            
-                            ?>
-
-                                </table>
-                                <nav aria-label="Page navigation">
-                                <ul class="pagination">
-                                  <!-- <li>
-                                    <a href="#" aria-label="Previous">
-                                      <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                  </li> -->
-                                  <?php for ($i=0;$i<=$pages/3;$i++) {
-                                            $url=base_url()."searchPagination/".$i;
-                                            if($i==0) {
-                                                echo '<li><a href="'.$url.'">'.++$i.'</a></li>';
-                                            }
-                                            else  {
-                                                echo '<li><a href="'.$url.'">'.$i.'</a></li>'; 
-                                            }
-                                        }
-                                    
-                                    
-                                    ?>
-                                 
-                                  <!-- <li>
-                                    <a href="#" aria-label="Next">
-                                      <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                  </li> -->
-                                </ul>
-                        </nav>
-                            <?php } ?>    
+                               
                     </div>
                     
                 </div>
@@ -374,281 +315,12 @@
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"
         integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
         crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <script type="text/javascript">
             $('#myModal').on('shown.bs.modal', function () {
                 $('#myInput').focus()
             })
-
-
-
-            /*================ Ajax call started ===============*/
-
-            //document.getElementsByClassName("ui-helper-hidden-accessible")[0].style="display:none;"
-                function urnSuggestion(data,callback){
-                        console.log(JSON.parse(data))
-                        var info=[];
-                        for(var i=0;i<JSON.parse(data).length;i++){
-                            console.log(JSON.parse(data)[i])
-                            info.push(JSON.parse(data)[i])
-                        }
-                        callback(info)
-                      
-                }
-
-                function isrSuggestion(data,callback){
-                    console.log(JSON.parse(data))
-                        var info=[];
-                        for(var i=0;i<JSON.parse(data).length;i++){
-                            console.log(JSON.parse(data)[i])
-                            info.push(JSON.parse(data)[i])
-                        }
-                        callback(info)
-                }
-
-
-
-
-
-                function surnameSuggestion(data,callback){
-                    console.log(JSON.parse(data))
-                        var info=[];
-                        for(var i=0;i<JSON.parse(data).length;i++){
-                            console.log(JSON.parse(data)[i])
-                            info.push(JSON.parse(data)[i])
-                        }
-                        callback(info)
-                }
-
-
-                function fnameSuggestion(data,callback){
-                    console.log(JSON.parse(data))
-                        var info=[];
-                        for(var i=0;i<JSON.parse(data).length;i++){
-                            console.log(JSON.parse(data)[i])
-                            info.push(JSON.parse(data)[i])
-                        }
-                        callback(info)
-                }
-
-
-
-                function locationSuggestion(data,callback){
-                    console.log(JSON.parse(data))
-                        var info=[];
-                        for(var i=0;i<JSON.parse(data).length;i++){
-                            console.log(JSON.parse(data)[i])
-                            info.push(JSON.parse(data)[i])
-                        }
-                        callback(info)
-                }
-
-                function sourceSuggestion(data,callback){
-                    console.log(JSON.parse(data))
-                        var info=[];
-                        for(var i=0;i<JSON.parse(data).length;i++){
-                            console.log(JSON.parse(data)[i])
-                            info.push(JSON.parse(data)[i])
-                        }
-                        callback(info)
-                }
-
-
-                function officerSuggestion(data,callback){
-                    console.log(JSON.parse(data))
-                        var info=[];
-                        for(var i=0;i<JSON.parse(data).length;i++){
-                            console.log(JSON.parse(data)[i])
-                            info.push(JSON.parse(data)[i])
-                        }
-                        callback(info)
-                }
-
-
-
-
-                       
-                        $(document).ready(function() {
-                            
-                                        
-                            $("#urnNo").keyup(function(event) {
-                                event.preventDefault();
-                                var urnNo = $("#urnNo").val();
-                                var data=[];
-                                jQuery.ajax({
-                                        type: "GET",
-                                        url: "<?php echo base_url(); ?>" + "index.php/CID/Ajax/Ajax/getUrn/"+urnNo+"/",
-                                        //dataType: 'json',
-                                        //data: {urn:urnNo},
-                                        success: function(res) {
-                                           //console.log(res)
-                                           urnSuggestion(res,function(data){
-                                            $( "#urnNo" ).autocomplete({
-                                                source: data
-                                                });
-                                           })
-                                           
-                                        }
-                                    });
-                                   
-                                });
-
-
-                                $("#isr").keyup(function(event) {
-                                event.preventDefault();
-                                var isr = $("#isr").val();
-                                
-                                jQuery.ajax({
-                                        type: "GET",
-                                        url: "<?php echo base_url(); ?>" + "index.php/CID/Ajax/Ajax/getIsr/"+isr+"/",
-                                        //dataType: 'json',
-                                        //data: {urn:urnNo},
-                                        success: function(res) {
-                                           //console.log(res)
-                                           isrSuggestion(res,function(data){
-                                            $( "#isr" ).autocomplete({
-                                                source: data
-                                                });
-                                           })
-                                           
-                                        }
-                                    });
-                                   
-                                });    
-
-
-
-                                $("#surName").keyup(function(event) {
-                                event.preventDefault();
-                                var surname = $("#surName").val();
-                                
-                                jQuery.ajax({
-                                        type: "GET",
-                                        url: "<?php echo base_url(); ?>" + "index.php/CID/Ajax/Ajax/getSurname/"+surname+"/",
-                                        //dataType: 'json',
-                                        //data: {urn:urnNo},
-                                        success: function(res) {
-                                           //console.log(res)
-                                           surnameSuggestion(res,function(data){
-                                            $( "#surName" ).autocomplete({
-                                                source: data
-                                                });
-                                           })
-                                           
-                                        }
-                                    });
-                                   
-                                });    
-
-
-                                $("#subjectName").keyup(function(event) {
-                                event.preventDefault();
-                                var fname = $("#subjectName").val();
-                                
-                                jQuery.ajax({
-                                        type: "GET",
-                                        url: "<?php echo base_url(); ?>" + "index.php/CID/Ajax/Ajax/getFirstname/"+fname+"/",
-                                        //dataType: 'json',
-                                        //data: {urn:urnNo},
-                                        success: function(res) {
-                                           //console.log(res)
-                                           fnameSuggestion(res,function(data){
-                                            $( "#subjectName" ).autocomplete({
-                                                source: data
-                                                });
-                                           })
-                                           
-                                        }
-                                    });
-                                   
-                                });    
-
-
-
-
-                                $("#location").keyup(function(event) {
-                                event.preventDefault();
-                                var location = $("#location").val();
-                                
-                                jQuery.ajax({
-                                        type: "GET",
-                                        url: "<?php echo base_url(); ?>" + "index.php/CID/Ajax/Ajax/getLocation/"+location+"/",
-                                        //dataType: 'json',
-                                        //data: {urn:urnNo},
-                                        success: function(res) {
-                                           //console.log(res)
-                                           locationSuggestion(res,function(data){
-                                            $( "#location" ).autocomplete({
-                                                source: data
-                                                });
-                                           })
-                                           
-                                        }
-                                    });
-                                   
-                                });    
-
-
-
-                                $("#sourceInfo").keyup(function(event) {
-                                event.preventDefault();
-                                var source = $("#sourceInfo").val();
-                                
-                                jQuery.ajax({
-                                        type: "GET",
-                                        url: "<?php echo base_url(); ?>" + "index.php/CID/Ajax/Ajax/getSource/"+source+"/",
-                                        //dataType: 'json',
-                                        //data: {urn:urnNo},
-                                        success: function(res) {
-                                           //console.log(res)
-                                           sourceSuggestion(res,function(data){
-                                            $( "#sourceInfo" ).autocomplete({
-                                                source: data
-                                                });
-                                           })
-                                           
-                                        }
-                                    });
-                                   
-                                });    
-
-
-
-
-                                $("#officerName").keyup(function(event) {
-                                event.preventDefault();
-                                var officer = $("#officerName").val();
-                                
-                                jQuery.ajax({
-                                        type: "GET",
-                                        url: "<?php echo base_url(); ?>" + "index.php/CID/Ajax/Ajax/getOfficer/"+officer+"/",
-                                        //dataType: 'json',
-                                        //data: {urn:urnNo},
-                                        success: function(res) {
-                                           //console.log(res)
-                                           officerSuggestion(res,function(data){
-                                            $( "#officerName" ).autocomplete({
-                                                source: data
-                                                });
-                                           })
-                                           
-                                        }
-                                    });
-                                   
-                                });    
-                        });
-
-
-                    
-                      
-                
-                   
-            /*================ Ajax call Ended ===============*/
-
-
-
         </script>
     </body>
 </html>

@@ -12,11 +12,41 @@ class ProtectiveMarking extends CI_Controller {
     		redirect('login', 'refresh');
     	}
 
-    	//$_SESSION['record_id'] = 2;//This line will have to customize after completing the project
+    	$group = array("Level-1","Level-2","Level-3","Level-4");
+
+    	if(!$this->ion_auth->in_group($group)){
+    		$this->session->set_flashdata('warning', "You don't have access to complete the operation.");
+    		redirect('dashboard', 'refresh');
+    	}
 		
 		$this->load->helper('CID/nav');
 		$this->load->library('form_validation');
 		$this->load->model('Protective_Marking_Model');
+
+		$handling_code_exists = 0;
+
+		if(isset($_SESSION['record_id'])){
+			$handling_code_exists = count($this->Protective_Marking_Model->get_info($_SESSION['record_id']));
+		}
+		
+    	if($handling_code_exists == 0){
+    		$this->session->set_flashdata('warning', "Please follow the completion note.");
+    		redirect('handlingcode/','refresh');
+    	}
+
+    	$handling_code_review_done = $this->Protective_Marking_Model->check_handling_code_review_done($_SESSION['record_id']);
+
+    	if(!$handling_code_review_done){
+    		$this->session->set_flashdata('warning', "Please follow the completion note.");
+    		redirect('handlingcodereview/','refresh');
+    	}
+
+    	$protectivemark_exist = $this->Protective_Marking_Model->protective_markings_exist($_SESSION['record_id']);
+
+    	if($protectivemark_exist == 1){
+    		$this->session->set_flashdata('warning', "Protective Marking has already selected for this record.");
+    		redirect('review/','refresh');
+    	}
     }
 
     public function index()
@@ -25,7 +55,7 @@ class ProtectiveMarking extends CI_Controller {
 		$record_id    = $_SESSION['record_id'];
 
 		$data['text']           = $this->Protective_Marking_Model->get_info($record_id);
-		$data['protectivemark'] = $this->Protective_Marking_Model->get_protective_mark();
+		$data['protectivemark'] = $this->Protective_Marking_Model->get_all_protective_marks();
 
 		$this->load->view('dashboard/protectivemark', $data);
 	}
@@ -55,8 +85,12 @@ class ProtectiveMarking extends CI_Controller {
         	$data['protective_id'] = $this->input->post('pi');
 
         	$this->Protective_Marking_Model->record_protective_marking($data);
+        	$urn = $this->Protective_Marking_Model->get_urn($_SESSION['record_id']);
 
-        	redirect('review/','refresh');
+        	$this->session->set_flashdata('success', "The record has been stored successfully with URN: ".$urn);
+        	unset($_SESSION['record_id']);
+        	
+        	redirect('dashboard','refresh');
         }
 	}
 }

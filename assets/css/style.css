@@ -88,11 +88,13 @@ nav{
 
 .main-headline{
     margin-top: -5px;
+    margin-bottom: 96px;
 }
 
 .error{
   background-color: red;
   color: white;
+  margin-bottom: 5px;
 }
 
 #initials{
@@ -369,7 +371,7 @@ textarea {
 .protective-mark > li{
     display: inline-block;
     border: 1px solid black;
-    margin-left: -6px;
+    margin-left: -5px;
     padding: 43px;
     padding-top:19px;
     padding-bottom:19px;
@@ -687,6 +689,12 @@ ul#review_page_p_marking li {
     width: 50%; /* Could be more or less, depending on screen size */
 }
 
+hr{
+    border: 0;
+    border-bottom: 2px dashed #fff;
+    background: #e20909;
+}
+
 /* The Close Button */
 .close {
     color: #aaa;
@@ -717,10 +725,13 @@ ul#review_page_p_marking li {
   height: 120px;
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
-  z-index: 10000;
-  margin-left: 618px;
-  margin-top: -164px;
+  z-index: 9999;
+ /* margin-left: 618px;
+  margin-top: -164px;*/
   display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
 }
 
 @-webkit-keyframes spin {
@@ -732,9 +743,3 @@ ul#review_page_p_marking li {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
-
-.error{
-    padding:10px;
-}
-

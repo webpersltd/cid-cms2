@@ -134,4 +134,68 @@ class Dissemination_model extends CI_Model {
         $this->db->update('records');
         return;
     }
+
+    public function get_selected_handling_code_for_this_text($txtID){
+        $this->db->where('text_id', $txtID);
+        $query = $this->db->get('handling_codes');
+        return $query->row()->code;
+    }
+
+    public function update_handling_code_for_this_text($txtID, $code){
+        $this->db->set('code', $code);
+        $this->db->where('text_id', $txtID);
+        $this->db->update('handling_codes');
+        return;
+    }
+
+    public function get_handling_instruction_for_this_text($txtID){
+        $this->db->where('text_id', $txtID);
+        $query = $this->db->get('handling_codes');
+        return $query->row()->instruction;
+    }
+
+    public function update_handling_instruction_for_this_text($tid, $hi){
+        $this->db->set('instruction', $hi);
+        $this->db->where('text_id', $tid);
+        $this->db->update('handling_codes');
+        return; 
+    }
+
+    public function check_dissemination_is_completed($record_id){
+        $this->db->where('record_id', $record_id);
+        $query = $this->db->get('texts');
+
+        $this->db->reset_query();
+
+        $done = false;
+
+        foreach ($query->result() as $value) {
+            $this->db->where('text_id', $value->id);
+            $this->db->where('check1', 1);
+            $this->db->where('check2', 1);
+            $this->db->where('check3', 1);
+            $get_data = $this->db->count_all_results('disseminations');
+
+            if($get_data == 1){
+                $done = true;
+            }else{
+                $done = false;
+            }
+        }
+
+        return $done;
+    }
+
+    public function check_this_record_is_already_fully_submitted($record_id){
+        $this->db->where('fully_submitted', 1);
+        $this->db->where('id', $record_id);
+
+        $query = $this->db->get('records');
+
+        if($query->num_rows() == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }

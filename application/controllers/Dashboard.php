@@ -6,81 +6,64 @@ class Dashboard extends CI_Controller {
 	public function __construct()
     {
 		parent::__construct();
-		if (!$this->ion_auth->logged_in()){
-    		$this->session->set_flashdata('message', "Please login first!!");
-    		redirect('login', 'refresh');
-		}
-		$this->load->model('Review_model');
 		$this->load->helper('CID/nav');
-		$this->load->database();		
+		$this->load->database();
+
+		if (!$this->ion_auth->logged_in()){
+		    $this->session->set_flashdata('message', "Please login first!!");
+		    redirect('login', 'refresh');
+		}		
 	}
 
 	public function index()
     {
-	   $data['departments'] = $this->db->get('departments');
-	   $data['inf_src']     = $this->db->order_by('name')->get('inf_sources');
-	   $user                = $this->ion_auth->user()->row();
-	   if(isset($_SESSION['record_id'])){
-			redirect('subjects/');
-		}      
-	   $this->load->js(base_url()."js/initials.js");
-	   $this->output->set_output_data("user", $user);	   
-	   $this->output->prepend_title("Initials");
-	   $this->output->set_template('default');
-	   $this->load->view('dashboard/initials',$data);
+    	$group = array("Level-1","Level-2","Level-3","Level-4");
+
+    	if(!$this->ion_auth->in_group($group)){
+    		$this->session->set_flashdata('warning', "You don't have access to complete the operation.");
+    		redirect('dashboard', 'refresh');
+    	}
+
+	   	$data['departments'] = $this->db->get('departments');
+	   	$data['inf_src']     = $this->db->order_by('name')->get('inf_sources');
+	   	$user                = $this->ion_auth->user()->row();
+
+	   	$this->load->js(base_url()."js/initials.js");
+	   	$this->output->set_output_data("user", $user);	   
+	   	$this->output->prepend_title("Initials");
+	   	$this->output->set_template('default');
+	   	$this->load->view('dashboard/initials',$data);
 	}
 
 	public function subjects()
 	{
-		$user=$this->ion_auth->user()->row();
-		if(!isset($_SESSION['record_id'])){
-			redirect('initials/');
+		$group = array("Level-1","Level-2","Level-3","Level-4");
+
+		if(!$this->ion_auth->in_group($group)){
+			$this->session->set_flashdata('warning', "You don't have access to complete the operation.");
+			redirect('dashboard', 'refresh');
 		}
-		if(isset($_SESSION['review_state'])){
-			redirect('text/');
-		}  
+
 		$query = $this->db->get('nationalities');
-		$data['user']=$user;
 		$data['nationalities']=$query;
 		$this->load->view('dashboard/subjects',$data);
 	}
 
 	public function text()
 	{
-		if(isset($_SESSION['record_id'])){
-			if(isset($_SESSION['review_state'])){
-				redirect('savereview/');
-			}
-			$this->load->view('dashboard/text');
-		}else{
-			redirect('subjects/');
+		$group = array("Level-1","Level-2","Level-3","Level-4");
+
+		if(!$this->ion_auth->in_group($group)){
+			$this->session->set_flashdata('warning', "You don't have access to complete the operation.");
+			redirect('dashboard', 'refresh');
 		}
 		
+		$this->load->view('dashboard/text');
 	}
 
 	public function saveinforeview()
 	{
-		if(isset($_SESSION['record_id'])){
-			$data['text']=$this->Review_model->getReviewText();
-			$status_flag=1;
-			foreach($data['text'] as $temp){
-				
-				if($temp->status==0){
-					$status_flag=0;
-				}
-			}
-			if($status_flag==1){
-				redirect('handlingcode/');
-			}
-
-			if($status_flag==0){
-				$this->load->view('dashboard/saveinformationandreview',$data);
-			}
-			
-		}else{
-			//echo "Something went wrong.....";
-		}
-		
+		$this->load->view('dashboard/saveinformationandreview');
 	}
 	
 	public function search()

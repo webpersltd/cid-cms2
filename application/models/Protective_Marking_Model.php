@@ -13,7 +13,7 @@ class Protective_Marking_Model extends CI_Model {
         return $query->result();
     }
 
-    public function get_protective_mark(){
+    public function get_all_protective_marks(){
     	$query = $this->db->get('protective_marking_lists');
     	return $query->result();
     }
@@ -28,7 +28,13 @@ class Protective_Marking_Model extends CI_Model {
         $this->db->join('protective_marking_lists', 'protective_markings.protective_id = protective_marking_lists.id');
         $this->db->where('record_id', $record_id);
         $query = $this->db->get();
-        return $query->row();
+        
+        if($query->num_rows() != 0){
+            return $query->row();
+        }else{
+            return false;
+        }
+        
     }
 
     public function update_pro_mark($pro_mark, $confirm = NULL){
@@ -40,5 +46,58 @@ class Protective_Marking_Model extends CI_Model {
         $this->db->where('record_id', $_SESSION['record_id']);
         $this->db->update('protective_markings');
         return;
-    }    
+    }
+
+    public function check_handling_code_review_done($record_id){
+        $this->db->where('reviewed', 0);
+        $this->db->where('record_id', $record_id);
+        $num_rows = $this->db->count_all_results('handling_codes');
+        
+        if($num_rows == 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function check_review_is_completed($record_id){
+        $this->db->where('record_id', $record_id);
+        $query = $this->db->get('texts');
+
+        $this->db->reset_query();
+
+        $done = false;
+
+        foreach ($query->result() as $value) {
+            $this->db->where('text_id', $value->id);
+            $this->db->where('details_reviewed', 1);
+            $get_data = $this->db->count_all_results('final_review');
+
+            if($get_data == 1){
+                $done = true;
+            }else{
+                $done = false;
+            }
+        }
+
+        return $done;
+    }
+
+    public function check_review_protective_mark_is_completed($record_id){
+        $this->db->where('record_id', $record_id);
+        $this->db->where('reviewed', 1);
+        return $this->db->count_all_results('protective_markings');
+    }
+
+    public function protective_markings_exist($record_id){
+        $this->db->where('record_id', $record_id);
+        return $this->db->count_all_results('protective_markings');
+    }
+
+    public function get_urn($record_id){
+        $this->db->where('id', $record_id);
+        $query = $this->db->get('records');
+
+        return $query->row()->urn;
+    }
 }

@@ -73,7 +73,7 @@ class Auth extends CI_Controller
 				//if the login is successful
 				//redirect them back to the home page
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
-				redirect('initials', 'refresh');
+				redirect('dashboard', 'refresh');
 			}
 			else
 			{
@@ -108,6 +108,7 @@ class Auth extends CI_Controller
 	 */
 	public function logout()
 	{
+		$this->db->delete('review_on_hold', array('user_id' => $this->ion_auth->user()->row()->id));
 		$this->data['title'] = "Logout";
 
 		// log the user out

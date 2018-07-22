@@ -22,6 +22,7 @@
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap-theme.min.css">
         <link type="text/css" rel="stylesheet" href="<?php echo base_url(); ?>assets/css/style.css"/>
+        <link type="text/css" rel="stylesheet" href="<?php echo base_url(); ?>assets/css/navbar-fixed-left.min.css"/>
         <?php
         foreach($css as $file){
          	echo "\n\t\t";
@@ -29,8 +30,8 @@
         } echo "\n\t";
         ?>
     </head>
-    <body>    
-        <nav class="navbar navbar-default">
+    <body style="padding-top: 70px">    
+        <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -73,21 +74,36 @@
         </nav>
 
         <div class="container-fluid">
-            <div class="col-md-2">
+            <div class="col-md-2 navbar-fixed-left" style="margin-top: 67px">
                 <ul class="list-group">
+                    <li  class="list-group-item"><a href="<?php echo base_url(); ?>dashboard"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp&nbspDashboard</a></li>
                     <li  class="list-group-item"><a href="<?php echo base_url(); ?>initials/"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp&nbspInitials</a></li>
                     <li class="list-group-item"><a href="<?php echo base_url(); ?>subjects/"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>&nbsp&nbspSubjects</a></li>
                     <li class="list-group-item"><a href="<?php echo base_url(); ?>text/"><span class="glyphicon glyphicon-text-size" aria-hidden="true"></span>&nbsp&nbspText</a></li>
                     <li class="list-group-item"><a href="<?php echo base_url(); ?>handlingcode/"><span class="glyphicon glyphicon-compressed" aria-hidden="true"></span>&nbsp&nbspHandling code</a></li>
                     <li class="list-group-item"><a href="<?php echo base_url(); ?>protectivemark/"><span class="glyphicon glyphicon-registration-mark" aria-hidden="true"></span>&nbsp&nbspProtective</a></li>
+                    <?php
+                    if($this->ion_auth->get_users_groups()->row()->name != "Level-1"){
+                    ?>
                     <li class="list-group-item"><a href="<?php echo base_url(); ?>review/"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp&nbspReview</a></li>
                     <li class="list-group-item"><a href="<?php echo base_url(); ?>dissemination/"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>&nbsp&nbspDissemination</a></li>
+                    <?php
+                    }
+                    ?>
                     <li class="list-group-item"><a href="<?php echo base_url(); ?>search/"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp&nbspSearch</a></li>
+                    <?php
+                    if($this->ion_auth->get_users_groups()->row()->name != "Level-1"){
+                    ?>
                     <li class="list-group-item"><a href="<?php echo base_url(); ?>viewlog/"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp&nbspView log</a></li>
+                    <?php
+                    }
+                    ?>
                 </ul>
             </div>
-
-            <div class="col-md-10">
+            <?php
+            if(!isset($top_navigation)){
+            ?>
+            <div class="col-md-13">
                 <nav class="breadcrumb">
                     <a class="breadcrumb-item <?= ($this->uri->uri_string() == "initials") ? 'active':'' ?>" href="#">INITIALS<span class="glyphicon glyphicon-menu-right" style="color: black; margin-left: 14px;"></span></a>
                     <a class="breadcrumb-item" href="#">SUBJECT<span class="glyphicon glyphicon-menu-right" style="color: black; margin-left: 14px;"></span></a>
@@ -98,6 +114,9 @@
                     <a class="breadcrumb-item" href="#">DISSEMINATION</a>
                 </nav>
             </div>
+            <?php
+            }
+            ?>
             <?= $output ?>
         </div>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -112,4 +131,5 @@
         /** -- to here -- */
         ?>    
 	</body>
+    <div class="loader"></div>
 </html>

@@ -57,6 +57,7 @@
         <div class="container-fluid">
             <div class="col-md-2">
                 <ul class="list-group">
+                    <li  class="list-group-item"><a href="<?php echo base_url(); ?>dashboard"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp&nbspDashboard</a></li>
                     <li  class="list-group-item"><a href="<?php echo base_url(); ?>initials/"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp&nbspInitials</a></li>
                     <li class="list-group-item"><a href="<?php echo base_url(); ?>subjects/"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>&nbsp&nbspSubjects</a></li>
                     <li class="list-group-item"><a href="<?php echo base_url(); ?>text/"><span class="glyphicon glyphicon-text-size" aria-hidden="true"></span>&nbsp&nbspText</a></li>
@@ -80,6 +81,17 @@
                     <a class="breadcrumb-item " href="#">REVIEW&nbsp;&nbsp;<span class="glyphicon glyphicon-menu-right"></span></a>
                     <a class="breadcrumb-item" href="dissemination.html">DISSEMINATION</a>
                 </nav>
+
+                <?php
+                if(!empty($this->session->flashdata('warning'))){
+                ?>
+                <div class="alert alert-warning">
+                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  <strong>Sorry!</strong> <?= $this->session->flashdata('warning') ?>
+                </div>
+                <?php
+                }
+                ?>
             </div>
 
             <div  class="col-md-10">                    

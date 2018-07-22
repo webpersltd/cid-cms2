@@ -53,6 +53,7 @@
         <div class="container-fluid">
             <div class="col-md-2 navbar-fixed-left" style="margin-top: 67px">
                 <ul class="list-group">
+                    <li  class="list-group-item"><a href="<?php echo base_url(); ?>dashboard"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp&nbspDashboard</a></li>
                     <li  class="list-group-item">
                         <a href="<?php echo base_url(); ?>initials/"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp&nbspInitials</a>
                     </li>
@@ -104,6 +105,17 @@
                     <a class="breadcrumb-item" href="#">REVIEW&nbsp;&nbsp;<span class="glyphicon glyphicon-menu-right"></span></a>
                     <a class="breadcrumb-item" href="dissemination.html">DISSEMINATION</a>
                 </nav>
+
+                <?php
+                if(!empty($this->session->flashdata('warning'))){
+                ?>
+                <div class="alert alert-warning">
+                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  <strong>Sorry!</strong> <?= $this->session->flashdata('warning') ?>
+                </div>
+                <?php
+                }
+                ?>
             </div>
             <div  class="col-md-13">
                 <?php
@@ -186,7 +198,7 @@
                                 <button type="submit" id="save_protective_code_data" class="btn btn-success">SAVE INFORMATION AND CONTINUE &nbsp;&nbsp;<span class="glyphicon glyphicon-ok"></span></button>
                             </div>
                             <div class="col-md-3">
-                                <a href="#" class="btn btn-danger">CANCEL&nbsp;&nbsp;<span class="glyphicon glyphicon-remove"></span></a>
+                                <a href="<?= base_url() ?>dashboard" onclick="alert('Do you really want to cancel?');" class="btn btn-danger">CANCEL&nbsp;&nbsp;<span class="glyphicon glyphicon-remove"></span></a>
                             </div>
                         </div>
                     </div>

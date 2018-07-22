@@ -10,11 +10,31 @@ class Review_Protective_Mark extends CI_Controller {
 		if (!$this->ion_auth->logged_in()){
     		$this->session->set_flashdata('message', "Please login first!!");
     		redirect('login', 'refresh');
-    	}
+    	}else if(isset($_SESSION['record_id'])){
 
-    	$this->load->helper('CID/nav');
-		$this->load->library('form_validation');
-		$this->load->model('Protective_Marking_Model');
+    		if($this->Protective_Marking_Model->get_protective_marking_for_the_record($_SESSION['record_id'])
+    			&& !$this->user_management->has_review_permission()){
+
+				$this->session->set_flashdata('warning', "You don't have access to complete the operation.");
+	    		redirect('dashboard', 'refresh');
+	    		
+			}
+
+	    	$this->load->helper('CID/nav');
+			$this->load->library('form_validation');
+			$this->load->model('Protective_Marking_Model');
+
+			$review_completed = 0;
+			$review_completed = $this->Protective_Marking_Model->check_review_is_completed($_SESSION['record_id']);
+			
+	    	if(!$review_completed){
+	    		$this->session->set_flashdata('warning', "Please follow the completion note.");
+	    		redirect('review/','refresh');
+	    	}
+    	}else{
+    		$this->session->set_flashdata('warning', "Please start to input a record first.");
+			redirect('dashboard','refresh');
+    	}    	
     }
 
     public function index()
@@ -22,7 +42,7 @@ class Review_Protective_Mark extends CI_Controller {
 		$data['user']                  = $this->ion_auth->user()->row();
 		$record_id                     = $_SESSION['record_id'];
 		$data['info']                  = $this->Protective_Marking_Model->get_info($record_id);
-		$data['protective_mark_lists'] = $this->Protective_Marking_Model->get_protective_mark($record_id);
+		$data['protective_mark_lists'] = $this->Protective_Marking_Model->get_all_protective_marks();
 		$data['p_mark']                = $this->Protective_Marking_Model->get_protective_marking_for_the_record($record_id);
 		$this->load->view('dashboard/review_protective_marking', $data);
 	}

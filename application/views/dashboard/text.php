@@ -53,6 +53,7 @@
         <div class="container-fluid">
             <div class="col-md-2">
             <ul class="list-group">
+                <li  class="list-group-item"><a href="<?php echo base_url(); ?>dashboard"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp&nbspDashboard</a></li>
                 <li  class="list-group-item"><a href="<?php echo base_url(); ?>initials/"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp&nbspInitials</a></li>
                 <li class="list-group-item"><a href="<?php echo base_url(); ?>subjects/"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>&nbsp&nbspSubjects</a></li>
                 <li class="list-group-item"><a href="<?php echo base_url(); ?>text/"><span class="glyphicon glyphicon-text-size" aria-hidden="true"></span>&nbsp&nbspText</a></li>
@@ -65,7 +66,7 @@
                 <li class="list-group-item"><a href="<?php echo base_url(); ?>viewlog/"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>&nbsp&nbspView log</a></li>
             </ul>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-10">
                 <nav class="breadcrumb">
                     <a class="breadcrumb-item" href="#">INITIALS&nbsp;&nbsp;<span class="glyphicon glyphicon-menu-right"></span></a>
                     <a class="breadcrumb-item" href="#">SUBJECT&nbsp;&nbsp;<span class="glyphicon glyphicon-menu-right"></span></a>
@@ -75,6 +76,17 @@
                     <a class="breadcrumb-item" href="#">REVIEW&nbsp;&nbsp;<span class="glyphicon glyphicon-menu-right"></span></a>
                     <a class="breadcrumb-item" href="#">DISSEMINATION</a>
                 </nav>
+
+                <?php
+                if(!empty($this->session->flashdata('warning'))){
+                ?>
+                <div class="alert alert-warning">
+                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  <strong>Sorry!</strong> <?= $this->session->flashdata('warning') ?>
+                </div>
+                <?php
+                }
+                ?>
                
                 <div class="col-md-10">
                     <p class="well"><span>Completion note : </span>You must ensure that each material fact and statement is entered in a new line of text and the information evaluated </h2>
@@ -89,22 +101,21 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
-                            <form method="post" action="<?php echo base_url(); ?>savetext/" >
-                                <div id="text-box">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-1" for="email">TEXT :</label>
-                                        <div class="col-md-10">
-                                            <textarea class="text_box" id="0" name="texts[]" rows="5" style="width:97.5%"></textarea>
-                                        </div>
-                                    <div style="margin-left:0px">
-                                        <h4>GRADING</h5>
-                                        <ul style="margin-left:0px">
-                                            <li  style="margin-left:-6px;width:2%"><input id="s0" style="width:213%;border:none;background-color:white" type="text" name="gradingSrc[]" value="0" /></li>
-                                            <li  style="margin-left:-6px;width:2%"><input id="i0" style="width:213%;border:none;background-color:white" type="text" name="gradingInf[]" value="0" /></li>
-                                        </ul>
+                            <form id="text-box">
+                                <div class="form-group">
+                                    <label class="control-label col-md-1" for="email">TEXT :</label>
+                                    <div class="col-md-10">
+                                        <textarea class="text_box" id="0"  rows="5" style="width:97.5%"></textarea>
                                     </div>
-                                    </div>
+                                   <div style="margin-left:0px">
+                                       <h4>GRADING</h5>
+                                       <ul style="margin-left:0px">
+                                          <li id="s0" style="margin-left:-6px">0</li>
+                                          <li  id="i0" style="margin-left:-6px">0</li>
+                                       </ul>
+                                   </div>
                                 </div>
+                            </form>
                             
                            
                            
@@ -152,7 +163,7 @@
                                     <div class="col-md-6">
                                         <div style="margin-top:30px"  class="row">
                                             <div class="col-md-6">
-                                                <button type="submit"   class="btn btn-success">SAVE AND REVIEW &nbsp&nbsp<span class="glyphicon glyphicon-ok"></span></button> 
+                                                <a type="submit" id="s_and_r" href="#" class="btn btn-success">SAVE AND REVIEW &nbsp&nbsp<span class="glyphicon glyphicon-ok"></span></a> 
                                             </div>
                                             <div class="col-md-6">
                                                 <button class="btn btn-danger">CANCEL&nbsp&nbsp<span class="glyphicon glyphicon-remove"></span></button>
@@ -162,7 +173,7 @@
                                 </div>
                             </div>
                         </div>
-                        </form>
+                        
                     </div>
                 </div>
             </div>
@@ -182,13 +193,6 @@
                     console.log("No data found");
                 }
             })
-        
-
-
-            
-    
-    
-
         </script>
     </body>
 </html>
